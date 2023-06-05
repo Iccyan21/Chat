@@ -1,0 +1,35 @@
+{% extends 'chat/base.html' %}
+
+{% block content %}
+<div class="chat">
+  <div class="chat-header">
+    <div class="chat-header-avatar">
+
+    </div>
+    <div class="chat-header-content">
+      <h3>Room: {{ room_name }}</h3>
+      <p>Online</p>
+    </div>
+  </div>
+  <div class="chat-history" style="">
+    {% for message in messages %}
+    <div class="message" style="{% if message.sender == request.user %}text-align: right;{% else %}-left{% endif %}">
+      <div class="message-content">
+        <div class="message-author">{{ message.sender }}</div>
+        <div class="message-text">{{ message.context }}</div>
+        <p class="text-muted">{{ message.timestamp|date:"Y/m/d H:i:s" }}</p>
+      </div>
+    </div>
+    {% empty %}
+    <p>No messages yet.</p>
+    {% endfor %}
+  </div>
+  <div class="chat-input">
+    <form method="post">
+      {% csrf_token %}
+      <input type="text" name="message" placeholder="Type your message here...">
+      <button type="submit">Send</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
